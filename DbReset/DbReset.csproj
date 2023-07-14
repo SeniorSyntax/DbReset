@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageVersion>1.0.0.0</PackageVersion>
+    <Description>DbReset</Description>
+    <PackageProjectUrl>https://github.com/Teleopti/DbReset</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>DbReset</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="DbAgnostic" Version="1.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Polly" Version="7.2.0" />
+    <PackageReference Include="Npgsql" Version="6.0.3" />
+  </ItemGroup>
+</Project>
