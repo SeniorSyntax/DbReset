@@ -7,6 +7,6 @@ public static class TestConnectionString
 		"Data Source=.;Integrated Security=True;Initial Catalog=DbReset.Test;";
 #else
 	public const string ConnectionString =
-		"Data Source=.\SQLEXPRESS;Integrated Security=True;Initial Catalog=DbReset.Test;";
+		@"Data Source=.\SQLEXPRESS;Integrated Security=True;Initial Catalog=DbReset.Test;";
 #endif
 }
