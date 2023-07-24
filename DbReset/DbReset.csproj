@@ -3,10 +3,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>DbReset</Description>
+    <Description>Reset database state for testing by storing and resetting state between tests. SqlServer and PostgreSql support.</Description>
     <PackageProjectUrl>https://github.com/Teleopti/DbReset</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>DbReset</PackageTags>
+    <PackageTags>DbReset Testing Test Tests Integration Sql Cleanup Respawn Reseed Respawn Data</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DbAgnostic" Version="1.0.9" />
