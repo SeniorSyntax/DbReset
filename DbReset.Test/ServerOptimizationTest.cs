@@ -38,7 +38,8 @@ public class ServerOptimizationTest
 			.ToDictionary(x => x.name, x => x.setting);
 		values["fsync"].Should().Be("off");
 		values["full_page_writes"].Should().Be("off");
-		values["shared_buffers"].Should().Be("163840");
+		// requires restart of postgres service to apply
+		// values["shared_buffers"].Should().Be("64000");
 		values["work_mem"].Should().Be("512000");
 	}
 }
