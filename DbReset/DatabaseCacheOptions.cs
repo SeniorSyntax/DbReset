@@ -7,4 +7,6 @@ public class CacheOptions
 	public string Version { get; set; }
 	public IOutput Output { get; set; }
 	public ICacheStrategy Strategy { get; set; }
+
+	public bool OptimizePostgreSqlForFastTesting { get; set; } = false;
 }

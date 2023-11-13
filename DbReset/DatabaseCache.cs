@@ -18,6 +18,8 @@ public static class DatabaseCache
 
 		Directory.CreateDirectory(BackupNameBuilder.TempFolder());
 
+		if (options.OptimizePostgreSqlForFastTesting)
+			new PostgresServerOptimization().Apply(context);
 		var strategy = cacheStrategy(options);
 		new DatabaseCacheInvalidator().Invalidate(context, strategy);
 		strategy.Backup(context);
