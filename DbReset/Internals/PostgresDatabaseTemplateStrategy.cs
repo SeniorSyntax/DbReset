@@ -20,10 +20,7 @@ internal class PostgresDatabaseTemplateStrategy : ICacheStrategy
 			where db.StartsWith(p)
 			select db;
 
-		invalidated.ForEach(x =>
-		{
-			new DatabaseDropper().Drop(context.MasterConnector(), x);
-		});
+		invalidated.ForEach(x => { new DatabaseDropper().Drop(context.MasterConnector(), x); });
 	}
 
 	public string BackupName(ICacheContext context)
@@ -49,17 +46,18 @@ internal class PostgresDatabaseTemplateStrategy : ICacheStrategy
 		connectorWithTimeout.ExecuteWithTimeout(sql, (int) TimeSpan.FromMinutes(5).TotalSeconds);
 	}
 
-	public bool TryRestore(ICacheContext context)
-	{
-		return templateRestore(context, BackupName(context));
-	}
+	public bool TryRestore(ICacheContext context) =>
+		templateRestore(context, BackupName(context));
 
 	private static bool templateRestore(ICacheContext context, string backupName)
 	{
 		var exists = context.MasterConnector()
 			.ExecuteScalar<bool>($"SELECT 1 FROM pg_catalog.pg_database WHERE datname = '{backupName}'");
 		if (!exists)
+		{
+			context.LogInfo($@"Database template {backupName} not found");
 			return false;
+		}
 
 		var databaseName = context.DatabaseName();
 
