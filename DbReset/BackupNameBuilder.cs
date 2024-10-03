@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using DbReset.Internals;
 
@@ -8,16 +9,16 @@ namespace DbReset;
 public static class BackupNameBuilder
 {
 	private const string extension = "dbcache";
-	private static readonly IEnumerable<int> keyCutoffs = new[] { int.MaxValue, 32, 16, 1 };
+	private static readonly IEnumerable<int> keyCutoffs = new[] {int.MaxValue, 32, 16, 1};
 
 	public static IEnumerable<string> PossibleKeysForKey(string key) =>
 		keysForKey(key, keyCutoffs);
 
 	private static IEnumerable<string> possibleNames(string key, string version)
 	{
-		var possibleContentVersion = keysForKey(version, new[] { int.MaxValue, 1 });
+		var possibleContentVersion = keysForKey(version, new[] {int.MaxValue, 1});
 		return PossibleKeysForKey(key)
-			.SelectMany(_ => possibleContentVersion, (k, v) => new { k, v })
+			.SelectMany(_ => possibleContentVersion, (k, v) => new {k, v})
 			.OrderByDescending(x => x.k.Length)
 			.ThenByDescending(x => x.v?.Length)
 			.Select(x => $"{x.k}{x.v}{extension}")
@@ -34,9 +35,9 @@ public static class BackupNameBuilder
 	private static IEnumerable<string> keysForKey(string key, IEnumerable<int> cutOffs)
 	{
 		if (key == null)
-			return new[] { key };
+			return new[] {key};
 
-		var hash = key.GetDeterministicHashCode().ToString();
+		var hash = key.GetDeterministicHashCode().ToString(CultureInfo.InvariantCulture);
 		hash = $".{hash}";
 		return (
 				from c in cutOffs
