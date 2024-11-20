@@ -9,7 +9,7 @@
     <PackageTags>DbReset Testing Test Tests Integration Sql Cleanup Respawn Reseed Respawn Data</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DbAgnostic" Version="2.0.23" />
+    <PackageReference Include="DbAgnostic" Version="3.0.25" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Polly" Version="7.2.0" />
