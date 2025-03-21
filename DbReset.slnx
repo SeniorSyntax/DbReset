@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/files/">
+    <File Path=".github/workflows/dotnet.yml" />
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="DbReset.Test/DbReset.Postgres.Test.csproj" />
+  <Project Path="DbReset.Test/DbReset.SqlServer.Test.csproj" />
+  <Project Path="DbReset/DbReset.csproj" />
+</Solution>
