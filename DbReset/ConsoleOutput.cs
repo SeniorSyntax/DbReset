@@ -8,9 +8,4 @@ public class ConsoleOutput : IOutput
 	{
 		Console.WriteLine(message);
 	}
-
-	public void Error(string message)
-	{
-		Console.WriteLine(message);
-	}
 }
