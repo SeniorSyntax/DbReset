@@ -9,11 +9,11 @@ internal static class ConnectorExtensions
 		string result = null;
 		connector.Batch(b =>
 		{
-			b.Execute("EXEC sp_configure 'show advanced options', 1");
-			b.Execute("RECONFIGURE");
-			b.Execute("EXEC sp_configure 'xp_cmdshell', 1");
-			b.Execute("RECONFIGURE");
-			var lines = b.Query<string>("xp_cmdshell '" + command + "'");
+			b.Execute("EXEC sp_configure 'show advanced options', 1;");
+			b.Execute("RECONFIGURE;");
+			b.Execute("EXEC sp_configure 'xp_cmdshell', 1;");
+			b.Execute("RECONFIGURE;");
+			var lines = b.Query<string>("xp_cmdshell '" + command + "';");
 			result = string.Join(Environment.NewLine, lines);
 		});
 		return result;
