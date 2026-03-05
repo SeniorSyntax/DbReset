@@ -12,6 +12,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Setup SQL Server (choco)
       shell: pwsh
@@ -40,3 +42,7 @@ jobs:
     - name: Push to nuget.org
       run: dotnet nuget push "**/*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
+    - name: Tag commit with version
+      run: |
+        git tag "v1.0.${{ github.run_number }}"
+        git push origin "v1.0.${{ github.run_number }}"
