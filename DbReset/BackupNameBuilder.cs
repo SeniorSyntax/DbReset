@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using DbReset.Internals;
 
 namespace DbReset;
@@ -30,7 +31,10 @@ public static class BackupNameBuilder
 			.First(x => x.Length <= maxLength);
 
 	public static string Extension() => $".{extension}";
-	public static string TempFolder() => @"c:\temp\dbcache";
+	public static string TempFolder() =>
+		RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? 
+			@"c:\temp\dbcache" : 
+			"/tmp/dbcache";
 
 	private static IEnumerable<string> keysForKey(string key, IEnumerable<int> cutOffs)
 	{
