@@ -13,7 +13,7 @@ public class SqlServerSnapshotStrategy_Experimental : ICacheStrategy
 		var files = context.DatabaseConnector()
 			.Query<(string name, string filename)>("select name, filename from sys.sysfiles");
 		var filesSqls = files
-			.Where(x => x.filename.EndsWith(".mdf") || x.filename.EndsWith("ndf"))
+			.Where(x => x.filename.EndsWith(".mdf") || x.filename.EndsWith(".ndf"))
 			.Select(x => $@"
 (
     NAME = [{x.name}], FILENAME = '{Path.Combine(BackupNameBuilder.TempFolder(), new FileInfo(x.filename).Name)}'
