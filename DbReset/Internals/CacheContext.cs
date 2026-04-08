@@ -26,21 +26,7 @@ internal class CacheContext : ICacheContext
 	public void LogInfo(string message) => Output?.Info(message);
 	
 	public string TempFolder() =>
-		dbRunsOnWindows() ? 
+		DatabaseRunsOn.Windows(this) ? 
 			DatabaseTempFolders.ForWindows : 
 			DatabaseTempFolders.ForLinux;
-
-	private static bool? _dbRunsOnWindows;
-	private bool dbRunsOnWindows()
-	{
-		if (!_dbRunsOnWindows.HasValue)
-		{
-			var connector = ((ICacheContext)this).MasterConnector();
-			_dbRunsOnWindows = ConnectionString.PickFunc(
-				() => connector.ExecuteScalar<string>("select host_platform from sys.dm_os_host_info;") == "Windows",
-				() => !connector.ExecuteScalar<string>("SELECT version();").Contains("linux")
-			);
-		}
-		return _dbRunsOnWindows.Value;
-	}
 }
