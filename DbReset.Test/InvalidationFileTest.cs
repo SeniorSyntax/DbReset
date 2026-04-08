@@ -32,7 +32,7 @@ public class InvalidationFileTest
 
 		var prefixes = BackupNameBuilder.PossibleKeysForKey($"DbReset.Test.{TestContext.CurrentContext.Test.Name}");
 		var backupFileName = (from p in prefixes
-							  from f in Directory.GetFiles(@"c:\temp\dbcache\", $"{p}*.dbcache")
+							  from f in Directory.GetFiles(BackupNameBuilder.TempFolder(), $"{p}*.dbcache")
 							  select f).Single();
 		var backupFile = new FileInfo(backupFileName);
 		var backup = JsonConvert.DeserializeObject<Backup>(File.ReadAllText(backupFile.FullName));
