@@ -1,5 +1,4 @@
 using System.IO;
-using DbAgnostic;
 using DbReset.Internals;
 
 namespace DbReset;
@@ -8,7 +7,7 @@ public static class DatabaseCache
 {
 	public static void Store(CacheOptions options)
 	{
-		ICacheContext context = new CacheContext
+		var context = new CacheContext
 		{
 			ConnectionString = options.ConnectionString,
 			Key = options.Key,
@@ -20,14 +19,15 @@ public static class DatabaseCache
 
 		if (options.OptimizePostgreSqlForFastTesting)
 			new PostgresServerOptimization().Apply(context);
-		var strategy = cacheStrategy(options);
+		
+		var strategy = cacheStrategy(options.Strategy, context);
 		new DatabaseCacheInvalidator().Invalidate(context, strategy);
 		strategy.Backup(context);
 	}
 
 	public static bool TryReset(CacheOptions options)
 	{
-		ICacheContext context = new CacheContext
+		var context = new CacheContext
 		{
 			ConnectionString = options.ConnectionString,
 			Key = options.Key,
@@ -35,15 +35,20 @@ public static class DatabaseCache
 			Output = options.Output
 		};
 
-		return cacheStrategy(options).TryRestore(context);
+		return cacheStrategy(options.Strategy, context).TryRestore(context);
 	}
 
-	private static ICacheStrategy cacheStrategy(CacheOptions options)
+	private static ICacheStrategy cacheStrategy(ICacheStrategy choosenStrategy, ICacheContext context)
 	{
-		if (options.Strategy != null)
-			return options.Strategy;
-		return options.ConnectionString.PickFunc<ICacheStrategy>(
-			() => new SqlServerFileStrategy(),
+		if (choosenStrategy != null)
+			return choosenStrategy;
+		return context.DatabaseConnector().PickFunc<ICacheStrategy>(
+			() =>
+			{
+				if(DatabaseRunsOn.Windows(context))
+					return new SqlServerFileStrategy();
+				return new SqlServerSnapshotStrategy_Experimental();
+			},
 			() => new PostgresDatabaseTemplateStrategy()
 		);
 	}
