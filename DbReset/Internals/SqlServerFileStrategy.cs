@@ -50,7 +50,7 @@ internal class SqlServerFileStrategy : ICacheStrategy
 			});
 		}
 
-		var file = Path.Combine(BackupNameBuilder.TempFolder(), backupName);
+		var file = Path.Combine(context.TempFolder(), backupName);
 		File.WriteAllText(file, JsonConvert.SerializeObject(backup, Formatting.Indented));
 	}
 
@@ -61,7 +61,7 @@ internal class SqlServerFileStrategy : ICacheStrategy
 
 	private static bool fileCopyRestore(ICacheContext context, string backupName)
 	{
-		var file = Path.Combine(BackupNameBuilder.TempFolder(), backupName);
+		var file = Path.Combine(context.TempFolder(), backupName);
 
 		if (!File.Exists(file))
 		{
@@ -114,7 +114,7 @@ internal class SqlServerFileStrategy : ICacheStrategy
 
 	private static void sqlServerFileCopyInvalidation(ICacheContext context, IEnumerable<string> prefixes)
 	{
-		var files = new DirectoryInfo(BackupNameBuilder.TempFolder()).GetFiles($"*{BackupNameBuilder.Extension()}");
+		var files = new DirectoryInfo(context.TempFolder()).GetFiles($"*{BackupNameBuilder.Extension()}");
 		var invalidated = from f in files
 			from p in prefixes
 			where f.Name.StartsWith(p)

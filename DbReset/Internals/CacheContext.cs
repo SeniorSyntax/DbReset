@@ -24,4 +24,15 @@ internal class CacheContext : ICacheContext
 	ISqlConnector ICacheContext.MasterConnector() => MasterConnector ?? new DapperConnector(ConnectionString.PointToMasterDatabase());
 
 	public void LogInfo(string message) => Output?.Info(message);
+	
+	private static bool? _dbRunsOnWindows;
+	public string TempFolder()
+	{
+		_dbRunsOnWindows ??= ((ICacheContext)this).MasterConnector()
+			.ExecuteScalar<string>("select host_platform from sys.dm_os_host_info;") == "Windows";
+		
+		return _dbRunsOnWindows.Value ? 
+			DatabaseTempFolders.ForWindows : 
+			DatabaseTempFolders.ForLinux;
+	}
 }

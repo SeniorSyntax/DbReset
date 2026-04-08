@@ -30,10 +30,12 @@ public class InvalidationFileTest
 		};
 		DatabaseCache.Store(cacheOptions);
 
+		//not really correct when running a container
+		var dirToSearch = Directory.Exists(DatabaseTempFolders.ForLinux) ? DatabaseTempFolders.ForLinux : DatabaseTempFolders.ForWindows;
 		var prefixes = BackupNameBuilder.PossibleKeysForKey($"DbReset.Test.{TestContext.CurrentContext.Test.Name}");
 		var backupFileName = (from p in prefixes
-							  from f in Directory.GetFiles(BackupNameBuilder.TempFolder(), $"{p}*.dbcache")
-							  select f).Single();
+			from f in Directory.GetFiles(dirToSearch, $"{p}*.dbcache")
+			select f).Single();
 		var backupFile = new FileInfo(backupFileName);
 		var backup = JsonConvert.DeserializeObject<Backup>(File.ReadAllText(backupFile.FullName));
 		var backupFiles = backup.Files.Select(x => x.Backup);

@@ -16,7 +16,7 @@ public class SqlServerSnapshotStrategy_Experimental : ICacheStrategy
 			.Where(x => x.filename.EndsWith(".mdf") || x.filename.EndsWith(".ndf"))
 			.Select(x => $@"
 (
-    NAME = [{x.name}], FILENAME = '{Path.Combine(BackupNameBuilder.TempFolder(), new FileInfo(x.filename).Name)}'
+    NAME = [{x.name}], FILENAME = '{Path.Combine(context.TempFolder(), new FileInfo(x.filename).Name)}'
 )
 ");
 		var filesSql = string.Join(",", filesSqls);

@@ -16,7 +16,7 @@ public static class DatabaseCache
 			Output = options.Output
 		};
 
-		Directory.CreateDirectory(BackupNameBuilder.TempFolder());
+		Directory.CreateDirectory(context.TempFolder());
 
 		if (options.OptimizePostgreSqlForFastTesting)
 			new PostgresServerOptimization().Apply(context);
